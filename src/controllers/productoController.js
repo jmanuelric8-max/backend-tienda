@@ -34,8 +34,9 @@ exports.listarProductos = async (_req, res) => {
         res.json(productos);
 
     } catch (error) {
+        console.error("No se pudieron listar los productos.", error);
         res.status(500).json({
-            error: error.message
+            error: error.message || "No se pudieron listar los productos"
         });
     }
 };
