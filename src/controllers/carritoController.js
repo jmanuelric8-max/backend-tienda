@@ -34,21 +34,24 @@ exports.obtenerCarrito = async (req, res) => {
             });
         }
 
-        const [productos] = await db.query(
-            `SELECT
-                dc.id AS detalle_id,
-                p.id AS producto_id,
-                p.nombre,
-                p.imagen,
-                dc.precio_unitario,
-                dc.cantidad,
-                (dc.precio_unitario * dc.cantidad) AS subtotal
-             FROM detalle_carrito dc
-             INNER JOIN productos p
-                ON dc.producto_id = p.id
-             WHERE dc.carrito_id = ?`,
-            [id]
-        );
+       
+const [productos] = await db.query(
+    `SELECT
+        dc.id AS detalle_id,
+        p.id AS producto_id,
+        p.nombre,
+        p.imagen,
+        p.imagen_url,
+        dc.precio_unitario,
+        dc.cantidad,
+        (dc.precio_unitario * dc.cantidad) AS subtotal
+     FROM detalle_carrito dc
+     INNER JOIN productos p
+        ON dc.producto_id = p.id
+     WHERE dc.carrito_id = ?`,
+    [id]
+);
+
 
         const total = productos.reduce(
             (suma, producto) =>
@@ -67,6 +70,8 @@ exports.obtenerCarrito = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 
 
 // 3. Agregar producto al carrito

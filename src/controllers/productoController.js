@@ -15,17 +15,19 @@ async function eliminarImagen(file) {
     }
 }
 
+
 exports.listarProductos = async (_req, res) => {
     try {
         const [productos] = await db.query(
-            `SELECT 
+            `SELECT
                 p.id,
                 p.nombre,
                 p.precio,
                 c.nombre AS categoria,
-                p.imagen
+                p.imagen,
+                p.imagen_url
              FROM productos p
-             INNER JOIN categorias c 
+             INNER JOIN categorias c
                 ON c.id = p.categoria_id
              WHERE p.estado = TRUE AND c.estado = TRUE
              ORDER BY p.id`
@@ -40,6 +42,10 @@ exports.listarProductos = async (_req, res) => {
         });
     }
 };
+
+
+
+
 
 exports.crearProducto = async (req, res) => {
     const body = req.body || {};
